@@ -2,30 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Author;
 use Illuminate\Http\Request;
+use App\Models\Author;
+// フォームリクエストの読み込み
+use App\Http\Requests\AuthorRequest;
 
 class AuthorController extends Controller
 {
-   // データ一覧ページの表示
-    public function index(){
+    // データ一覧ページの表示
+    public function index()
+    {
         $authors = Author::all();
         return view('index', ['authors' => $authors]);
-    }
+   }
 
    // データ追加用ページの表示
-    public function add(){
+    public function add()
+    {
         return view('add');
     }
 
-    // データ追加機能
-    public function create(Request $request){
+    // 追加機能
+    public function create(AuthorRequest $request)
+    {
         $form = $request->all();
         Author::create($form);
         return redirect('/');
     }
 
-	// 追記：ここから
     // データ編集ページの表示
     public function edit(Request $request){
         $author = Author::find($request->id);
@@ -33,7 +37,7 @@ class AuthorController extends Controller
     }
 
     // 更新機能
-    public function update(Request $request)
+    public function update(AuthorRequest $request)
     {
         $form = $request->all();
         unset($form['_token']);
@@ -48,33 +52,18 @@ class AuthorController extends Controller
         return view('delete', ['author' => $author]);
     }
 
-     // 削除機能
+    // 削除機能
     public function remove(Request $request)
     {
         Author::find($request->id)->delete();
         return redirect('/');
     }
-    public function find()
-    {
-        return view('find', ['input' => '']);
-    }
-    public function search(Request $request)
-    {
-        //- $item = Author::where('name', 'LIKE',"%{$request->input}%")->first();  LIKEと%を利用すると部分一致
-        $item = Author::where('name', $request->input)->first();
-        $param = [
-            'input' => $request->input,
-            'item' => $item
-        ];
-        return view('find', $param);
-    }
-    public function bind(Author $author)
-    {
-        $data = [
-            'item'=>$author,
-        ];
-        return view('author.binds', $data);
-    }
-}
 
+    public function verror()
+    {
+    return view('verror');
+    }
+
+
+}
 
