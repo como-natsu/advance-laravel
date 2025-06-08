@@ -1,1 +1,6 @@
+# Docker関係
 docker/mysql/data/
+
+# Laravelの.envファイル（セキュリティのために無視）
+.env
+src/.env.testing
